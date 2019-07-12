@@ -11,7 +11,10 @@ class BooksList extends Component{
                             this.props.books.map((book)=>(
                                 
                                 <div className='card' key={book.id}>
-                                <img src={`${book.avatarURL}`} alt={book.name} className='card-img-top' />
+                                    <button
+                                    onClick={()=>this.props.onDeleteBook(book)} className="btn-primary"
+                                    >Remove Book from this list</button>
+                                <img src={book.avatarURL} alt={book.name} className='card-img-top' />
                                 <div className='card-body'>
                     
                                   <div className='row'>
