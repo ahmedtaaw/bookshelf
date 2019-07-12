@@ -34,7 +34,7 @@ class BooksList extends Component{
         //if query state not empty
         : books.filter((b)=>
             
-            b.name.toLowerCase().includes(query.toLowerCase())
+            b.title.toLowerCase().includes(query.toLowerCase())
         )
 
 
@@ -71,12 +71,12 @@ class BooksList extends Component{
                                     <button
                                     onClick={()=>onDeleteBook(book)} className="btn-primary"
                                     >Remove Book from this list</button>
-                                <img src={book.avatarURL} alt={book.name} className='card-img-top' />
+                                <img src={book.imageLinks.thumbnail} alt={book.title} className='card-img-top' />
                                 <div className='card-body'>
                     
                                   <div className='row'>
                                     <div>
-                                      <h3 className='card-title'>{book.name}</h3>
+                                      <h3 className='card-title'>{book.title}</h3>
                                     </div>
                                     <div>
                                       <h6><span className="badge badge-primary">want to read</span></h6>

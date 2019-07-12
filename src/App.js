@@ -3,13 +3,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import { Link } from 'react-router-dom';
 import BooksList from './BooksList';
+import * as BooksAPI from './BooksAPI';
 
 
 
 class App extends Component{
   state={
     books:[
-      {
+     /* {
         'id':'book1', 
         'name':'book-1',
         'avatarURL':'http://localhost:5001/project-1/bookimages/book-1.jpg'
@@ -39,9 +40,19 @@ class App extends Component{
         'id':'book6',
         'name':'book-6',
         'avatarURL':'http://localhost:5001/project-1/bookimages/book-6.jpg'
-      },
+      },*/
     ]
     
+  }
+
+  componentDidMount(){
+    //callbooksAPI then return promise
+    BooksAPI.getAll()
+    .then((books)=>{
+      this.setState(()=>({
+        books
+      }))
+    })
   }
 
   //remove book Method
