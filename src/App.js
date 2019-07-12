@@ -43,12 +43,23 @@ class App extends Component{
     ]
     
   }
+
+  //remove book Method
+  removeBook=(book)=>{
+    this.setState((currentState)=>({
+      books:currentState.books.filter((b)=>{
+        return b.id !== book.id
+      })
+    }))
+  }
+
+
   render(){
   return (
     <div className='container-fluid'>
         <h1>book<span className="badge badge-secondary">Shelf</span></h1>
         <hr></hr>
-      <BooksList books={this.state.books}/>
+      <BooksList books={this.state.books} onDeleteBook={this.removeBook}/>
     </div>
   );
 }
