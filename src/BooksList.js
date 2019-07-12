@@ -2,18 +2,60 @@ import React, {Component} from 'react';
 import propTypes from 'prop-types';
 
 class BooksList extends Component{
+    static propTypes={
+        books: propTypes.array.isRequired,
+        onDeleteBook: propTypes.func.isRequired
+    }
+
+    state={
+        query:''
+    }
+
+    updateQuery=(query)=>{
+        this.setState(()=>({
+            query: query.trim()
+        }))
+    }
+
     render(){
         console.log(this.props);
+
+        const{query}=this.state
+        const {books, onDeleteBook}=this.props
+
+        //if query is empty
+        const showingBooks = query === ''
+        //then show our books to be original books 
+        ? books
+        //if query state not empty
+        : books.filter((b)=>
+            
+            b.name.toLowerCase().includes(query.toLowerCase())
+        )
+
+
         return(
+            <div>
+            <div className="row">
+                <div className="col-md-12">
+                    <div className='form-group'>
+                   
+                    <input className="form-control" type="text" placeholder="search book"
+                    value={query}
+                    onChange={(event)=>this.updateQuery(event.target.value)}
+                    />
+                    </div>
+                </div>
+            </div>
             <div className="row">
                 <div className="col-md-12">
                     <div className='card-columns'>
                         {
-                            this.props.books.map((book)=>(
+                            showingBooks.map((book)=>(
                                 
                                 <div className='card' key={book.id}>
                                     <button
-                                    onClick={()=>this.props.onDeleteBook(book)} className="btn-primary"
+                                    onClick={()=>onDeleteBook(book)} className="btn-primary"
                                     >Remove Book from this list</button>
                                 <img src={book.avatarURL} alt={book.name} className='card-img-top' />
                                 <div className='card-body'>
@@ -41,14 +83,10 @@ class BooksList extends Component{
                       </div>
                 </div>
             </div>
-        
+            </div>
         )
     }
 }
 
-BooksList.propTypes={
-    books: propTypes.array.isRequired,
-    onDeleteBook: propTypes.func.isRequired
-}
 
 export default BooksList;
