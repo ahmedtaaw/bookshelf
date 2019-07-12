@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import propTypes from 'prop-types';
 
 class BooksList extends Component{
     render(){
@@ -43,6 +44,11 @@ class BooksList extends Component{
         
         )
     }
+}
+
+BooksList.propTypes={
+    books: propTypes.array.isRequired,
+    onDeleteBook: propTypes.func.isRequired
 }
 
 export default BooksList;
