@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import { Link } from 'react-router-dom';
@@ -39,8 +39,8 @@ const books=[
   },
 ]
 
-
-function App() {
+class App extends Component{
+  render(){
   return (
     <div className='container-fluid'>
         <h1>book<span className="badge badge-secondary">Shelf</span></h1>
@@ -48,6 +48,7 @@ function App() {
       <BooksList books={books}/>
     </div>
   );
+}
 }
 
 export default App;
