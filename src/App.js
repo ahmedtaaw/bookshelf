@@ -34,9 +34,6 @@ class App extends Component{
     }))
   }
   updateBookShelf=(book,newShelf)=>{
-    console.log("######");
-    console.log(book);
-    console.log(newShelf)
     BooksAPI.update(book,newShelf)
     this.componentDidMount()
   }
@@ -51,7 +48,7 @@ class App extends Component{
          <BooksList books={this.state.books} onDeleteBook={this.removeBook} onUpdateBook={this.updateBookShelf}/>
         )}/>
         <Route exact path='/books-search' render={()=>(
-         <BooksSearch books={this.state.books} onDeleteBook={this.removeBook}/>
+         <BooksSearch books={this.state.books} onDeleteBook={this.removeBook} onUpdateBook={this.updateBookShelf}/>
         )}/>
       </div>
   );

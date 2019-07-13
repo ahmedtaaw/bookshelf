@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 class BooksSearch extends Component{
     static propTypes={
         books: propTypes.array.isRequired,
-        onDeleteBook: propTypes.func.isRequired
+        onDeleteBook: propTypes.func.isRequired,
+        onUpdateBook: propTypes.func.isRequired
     }
 
     state={
@@ -23,8 +24,11 @@ class BooksSearch extends Component{
         this.updateQuery('')
     }
     render(){
+        this.updateInputSelect=(book,e)=>{
+            onUpdateBook(book,e)
+        }
         const{query}=this.state
-        const {books, onDeleteBook}=this.props
+        const {books, onDeleteBook, onUpdateBook}=this.props
 
         //if query is empty
         const showingBooks = query === ''
@@ -86,7 +90,7 @@ class BooksSearch extends Component{
                                   </div> 
                     
                     
-                                  <select value={book.shelf} className='form-control'>
+                                  <select value={book.shelf} onChange={(event)=>this.updateInputSelect(book,event.target.value)} className='form-control'>
                                     <option value="currentlyReading">Currently Reading</option>
                                     <option value="wantToRead">want to read</option>
                                     <option value="read">read</option>
