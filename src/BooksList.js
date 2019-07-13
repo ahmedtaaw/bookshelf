@@ -17,6 +17,7 @@ class BooksList extends Component{
         }))
     }
 
+
     clearQuery=()=>{
         this.updateQuery('')
     }
@@ -25,7 +26,7 @@ class BooksList extends Component{
         console.log(this.props);
 
         const{query}=this.state
-        const {books, onDeleteBook}=this.props
+        const {books,booksCR, onDeleteBook}=this.props
 
         //if query is empty
         const showingBooks = query === ''
@@ -37,10 +38,25 @@ class BooksList extends Component{
             b.title.toLowerCase().includes(query.toLowerCase())
         )
 
+        const showingBooksCR = query === "currentlyReading" ? books
+        :books.filter(function(i){
+            return i.shelf==="currentlyReading"
+        })
+        const showingBooksRR = query === "read" ? books
+        :books.filter(function(i){
+            return i.shelf==="read"
+        })
+        const showingBooksWR = query === "wantToRead" ? books
+        :books.filter(function(i){
+            return i.shelf==="wantToRead"
+        })
+
 
         return(
+            
             <div>
-            <div className="row">
+                
+                <div className="row">
                 <div className="col-md-6">
                     <div className='form-group'>
                    
@@ -60,13 +76,14 @@ class BooksList extends Component{
                         )
                     }
                 </div>
-            </div>
+                </div>
+            <h2 className="alert alert-primary" role="alert">Currently Reading</h2>
             <div className="row">
                 <div className="col-md-12">
                     <div className='card-columns'>
                         {
-                            showingBooks.map((book)=>(
-                                
+                            showingBooksCR.map((book)=>(
+                               
                                 <div className='card' key={book.id}>
                                     <button
                                     onClick={()=>onDeleteBook(book)} className="btn-primary"
@@ -75,11 +92,84 @@ class BooksList extends Component{
                                 <div className='card-body'>
                     
                                   <div className='row'>
-                                    <div>
-                                      <h3 className='card-title'>{book.title}</h3>
+                                    <div className="col-md-12">
+                                      <h5 className='card-title'>{book.title}</h5>
+                                    
+                                      <h6><span className="badge badge-primary">{book.shelf}</span></h6>
                                     </div>
-                                    <div>
-                                      <h6><span className="badge badge-primary">want to read</span></h6>
+                                  </div> 
+                    
+                    
+                                  <select className='form-control'>
+                                    <option disabled value='-1' defaultValue>Move To</option><option>currently</option>
+                                    <option>want to read</option>
+                                    <option>read</option>
+                                  </select>
+                    
+                                </div>
+                              </div>
+                            ))
+                        }
+                      </div>
+                </div>
+            </div>
+            
+            <h2 className="alert alert-primary" role="alert">Want to Read</h2>
+            <div className="row">
+                <div className="col-md-12">
+                    <div className='card-columns'>
+                        {
+                            showingBooksWR.map((book)=>(
+                               
+                                <div className='card' key={book.id}>
+                                    <button
+                                    onClick={()=>onDeleteBook(book)} className="btn-primary"
+                                    >Remove Book from this list</button>
+                                <img src={book.imageLinks.thumbnail} alt={book.title} className='card-img-top' />
+                                <div className='card-body'>
+                    
+                                  <div className='row'>
+                                    <div className="col-md-12">
+                                      <h5 className='card-title'>{book.title}</h5>
+                                    
+                                      <h6><span className="badge badge-primary">{book.shelf}</span></h6>
+                                    </div>
+                                  </div> 
+                    
+                    
+                                  <select className='form-control'>
+                                    <option disabled value='-1' defaultValue>Move To</option><option>currently</option>
+                                    <option>want to read</option>
+                                    <option>read</option>
+                                  </select>
+                    
+                                </div>
+                              </div>
+                            ))
+                        }
+                      </div>
+                </div>
+            </div>
+            
+            <h2 className="alert alert-primary" role="alert">Read</h2>
+            <div className="row">
+                <div className="col-md-12">
+                    <div className='card-columns'>
+                        {
+                            showingBooksRR.map((book)=>(
+                               
+                                <div className='card' key={book.id}>
+                                    <button
+                                    onClick={()=>onDeleteBook(book)} className="btn-primary"
+                                    >Remove Book from this list</button>
+                                <img src={book.imageLinks.thumbnail} alt={book.title} className='card-img-top' />
+                                <div className='card-body'>
+                    
+                                  <div className='row'>
+                                    <div className="col-md-12">
+                                      <h5 className='card-title'>{book.title}</h5>
+                                    
+                                      <h6><span className="badge badge-primary">{book.shelf}</span></h6>
                                     </div>
                                   </div> 
                     
@@ -98,6 +188,7 @@ class BooksList extends Component{
                 </div>
             </div>
             </div>
+          
         )
     }
 }
