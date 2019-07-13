@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import propTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class BooksList extends Component{
     static propTypes={
@@ -26,7 +27,7 @@ class BooksList extends Component{
         console.log(this.props);
 
         const{query}=this.state
-        const {books,booksCR, onDeleteBook}=this.props
+        const {books, onDeleteBook}=this.props
 
         //if query is empty
         const showingBooks = query === ''
@@ -56,27 +57,11 @@ class BooksList extends Component{
             
             <div>
                 
-                <div className="row">
-                <div className="col-md-6">
-                    <div className='form-group'>
-                   
-                    <input className="form-control" type="text" placeholder="search book"
-                    value={query}
-                    onChange={(event)=>this.updateQuery(event.target.value)}
-                    />
-                    </div>
-                </div>
-                <div className='col-md-6'>
-                    {
-                        showingBooks.length != books.length &&(
-                            <div>
-                                <span>Now showing {showingBooks.length} of {books.length}</span>
-                                <button onClick={this.clearQuery}>Show ALL</button>
-                                </div>
-                        )
-                    }
-                </div>
-                </div>
+            <Link 
+            to="/books-search"
+            className="btn btn-primary"
+            >Search</Link>
+            <h2>Your Books List</h2>
             <h2 className="alert alert-primary" role="alert">Currently Reading</h2>
             <div className="row">
                 <div className="col-md-12">
@@ -101,7 +86,7 @@ class BooksList extends Component{
                     
                     
                                   <select className='form-control'>
-                                    <option disabled value='-1' defaultValue>Move To</option><option>currently</option>
+                                    <option>currently</option>
                                     <option>want to read</option>
                                     <option>read</option>
                                   </select>
@@ -136,9 +121,9 @@ class BooksList extends Component{
                                     </div>
                                   </div> 
                     
-                    
+                                
                                   <select className='form-control'>
-                                    <option disabled value='-1' defaultValue>Move To</option><option>currently</option>
+                                    <option>currently</option>
                                     <option>want to read</option>
                                     <option>read</option>
                                   </select>
@@ -175,7 +160,7 @@ class BooksList extends Component{
                     
                     
                                   <select className='form-control'>
-                                    <option disabled value='-1' defaultValue>Move To</option><option>currently</option>
+                                    <option>currently</option>
                                     <option>want to read</option>
                                     <option>read</option>
                                   </select>
