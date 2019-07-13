@@ -72,7 +72,7 @@ class BooksSearch extends Component{
                                
                                 <div className='card' key={book.id}>
                                     <button
-                                    onClick={()=>onDeleteBook(book)} className="btn-primary"
+                                    onClick={()=>onDeleteBook(book)} className="btn btn-block btn-primary"
                                     >Remove Book from this list</button>
                                 <img src={book.imageLinks.thumbnail} alt={book.title} className='card-img-top' />
                                 <div className='card-body'>
@@ -86,10 +86,10 @@ class BooksSearch extends Component{
                                   </div> 
                     
                     
-                                  <select className='form-control'>
-                                    <option>currently</option>
-                                    <option>want to read</option>
-                                    <option>read</option>
+                                  <select value={book.shelf} className='form-control'>
+                                    <option value="currentlyReading">Currently Reading</option>
+                                    <option value="wantToRead">want to read</option>
+                                    <option value="read">read</option>
                                   </select>
                     
                                 </div>

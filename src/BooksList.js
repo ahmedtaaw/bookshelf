@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 class BooksList extends Component{
     static propTypes={
         books: propTypes.array.isRequired,
-        onDeleteBook: propTypes.func.isRequired
+        onDeleteBook: propTypes.func.isRequired,
+        onUpdateBook: propTypes.func.isRequired
     }
 
     state={
@@ -23,11 +24,17 @@ class BooksList extends Component{
         this.updateQuery('')
     }
 
-    render(){
-        console.log(this.props);
+    
 
+
+   
+
+    render(){
+        this.updateInputSelect=(book,e)=>{
+            onUpdateBook(book,e)
+        }
         const{query}=this.state
-        const {books, onDeleteBook}=this.props
+        const {books, onDeleteBook, onUpdateBook}=this.props
 
         //if query is empty
         const showingBooks = query === ''
@@ -37,7 +44,7 @@ class BooksList extends Component{
         : books.filter((b)=>
             
             b.title.toLowerCase().includes(query.toLowerCase())
-        )
+        ) 
 
         const showingBooksCR = query === "currentlyReading" ? books
         :books.filter(function(i){
@@ -71,7 +78,7 @@ class BooksList extends Component{
                                
                                 <div className='card' key={book.id}>
                                     <button
-                                    onClick={()=>onDeleteBook(book)} className="btn-primary"
+                                    onClick={()=>onDeleteBook(book)} className="btn btn-block btn-primary"
                                     >Remove Book from this list</button>
                                 <img src={book.imageLinks.thumbnail} alt={book.title} className='card-img-top' />
                                 <div className='card-body'>
@@ -85,7 +92,7 @@ class BooksList extends Component{
                                   </div> 
                     
                     
-                                  <select value={book.shelf} className='form-control'>
+                                  <select value={book.shelf} onChange={(event)=>this.updateInputSelect(book,event.target.value)} className='form-control'>
                                     <option value="currentlyReading">Currently Reading</option>
                                     <option value="wantToRead">want to read</option>
                                     <option value="read">read</option>
@@ -108,7 +115,7 @@ class BooksList extends Component{
                                
                                 <div className='card' key={book.id}>
                                     <button
-                                    onClick={()=>onDeleteBook(book)} className="btn-primary"
+                                    onClick={()=>onDeleteBook(book)} className="btn btn-block btn-primary"
                                     >Remove Book from this list</button>
                                 <img src={book.imageLinks.thumbnail} alt={book.title} className='card-img-top' />
                                 <div className='card-body'>
@@ -122,7 +129,7 @@ class BooksList extends Component{
                                   </div> 
                     
                                 
-                                  <select value={book.shelf} className='form-control'>
+                                  <select value={book.shelf} onChange={(event)=>this.updateInputSelect(book,event.target.value)} className='form-control'>
                                     <option value="currentlyReading">Currently Reading</option>
                                     <option value="wantToRead">want to read</option>
                                     <option value="read">read</option>
@@ -145,7 +152,7 @@ class BooksList extends Component{
                                
                                 <div className='card' key={book.id}>
                                     <button
-                                    onClick={()=>onDeleteBook(book)} className="btn-primary"
+                                    onClick={()=>onDeleteBook(book)} className="btn btn-block btn-primary"
                                     >Remove Book from this list</button>
                                 <img src={book.imageLinks.thumbnail} alt={book.title} className='card-img-top' />
                                 <div className='card-body'>
@@ -159,7 +166,7 @@ class BooksList extends Component{
                                   </div> 
                     
                     
-                                  <select value={book.shelf} className='form-control'>
+                                  <select value={book.shelf} onChange={(event)=>this.updateInputSelect(book,event.target.value)} className='form-control'>
                                     <option value="currentlyReading">Currently Reading</option>
                                     <option value="wantToRead">want to read</option>
                                     <option value="read">read</option>

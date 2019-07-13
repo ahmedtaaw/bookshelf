@@ -1,3 +1,13 @@
 .card-columns {
-  column-count: 5;
+  column-count:2;
 }
+.card-columns select{
+  position: absolute;
+  z-index: 3;
+  top: 30px;
+  left: 0;
+  height: Calc(100% - 30px);
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+} 
