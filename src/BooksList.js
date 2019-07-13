@@ -85,10 +85,10 @@ class BooksList extends Component{
                                   </div> 
                     
                     
-                                  <select className='form-control'>
-                                    <option>currently</option>
-                                    <option>want to read</option>
-                                    <option>read</option>
+                                  <select value={book.shelf} className='form-control'>
+                                    <option value="currentlyReading">Currently Reading</option>
+                                    <option value="wantToRead">want to read</option>
+                                    <option value="read">read</option>
                                   </select>
                     
                                 </div>
@@ -122,10 +122,10 @@ class BooksList extends Component{
                                   </div> 
                     
                                 
-                                  <select className='form-control'>
-                                    <option>currently</option>
-                                    <option>want to read</option>
-                                    <option>read</option>
+                                  <select value={book.shelf} className='form-control'>
+                                    <option value="currentlyReading">Currently Reading</option>
+                                    <option value="wantToRead">want to read</option>
+                                    <option value="read">read</option>
                                   </select>
                     
                                 </div>
@@ -159,10 +159,10 @@ class BooksList extends Component{
                                   </div> 
                     
                     
-                                  <select className='form-control'>
-                                    <option>currently</option>
-                                    <option>want to read</option>
-                                    <option>read</option>
+                                  <select value={book.shelf} className='form-control'>
+                                    <option value="currentlyReading">Currently Reading</option>
+                                    <option value="wantToRead">want to read</option>
+                                    <option value="read">read</option>
                                   </select>
                     
                                 </div>
