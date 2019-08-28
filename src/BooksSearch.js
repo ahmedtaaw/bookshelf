@@ -1,113 +1,124 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import propTypes from 'prop-types';
-
+import * as BooksAPI from './BooksAPI';
 import { Link } from 'react-router-dom';
+import BookListContainer from './BookListContainer';
+import BookCard from './BookCard';
+import allowedQueries from './allowedQueries';
 
-class BooksSearch extends Component{
-    static propTypes={
-        books: propTypes.array.isRequired,
-        onDeleteBook: propTypes.func.isRequired,
-        onUpdateBook: propTypes.func.isRequired
-    }
+class BooksSearch extends Component {
+  static propTypes = {
+    onUpdateBook: propTypes.func.isRequired,
+    savedBooks: propTypes.array.isRequired,
+  };
 
-    state={
-        query:''
-    }
-    updateQuery=(query)=>{
-        this.setState(()=>({
-            query: query.trim()
-        }))
-    }
+  state = {
+    books: [],
+    query: '',
+  };
 
+  onUpdateBook = (book, shelf) => {
+    const newBooks = this.state.books.map(bk => {
+      if (bk.id === book.id) {
+        return { ...bk, shelf };
+      }
+      return bk;
+    });
+    this.setState({ books: newBooks });
+    this.props.onUpdateBook(book, shelf);
+  };
 
-    clearQuery=()=>{
-        this.updateQuery('')
-    }
-    render(){
-        this.updateInputSelect=(book,e)=>{
-            onUpdateBook(book,e)
+  checkForSavedBook = (books, savedBooks) => {
+    let newBookIndex;
+    let savedBookIndex;
+    books.find((item, index) => {
+      return savedBooks.forEach((book, iSB) => {
+        if (item.id === book.id) newBookIndex = index;
+        savedBookIndex = iSB;
+      });
+    });
+    return { newBookIndex, savedBookIndex };
+  };
+
+  checkForAllowedQuery = (query, allowedArr) => {
+    return (
+      allowedQueries
+        .map(function(item) {
+          return item.toLowerCase();
+        })
+        .indexOf(query.toLowerCase()) !== -1
+    );
+  };
+
+  updateQuery = query => {
+    this.setState(() => ({
+      query: query.replace(/\s+/g, ' '),
+    }));
+    if (this.checkForAllowedQuery(query, allowedQueries)) {
+      BooksAPI.search(query).then(res => {
+        let newBooks = res;
+        const { newBookIndex, savedBookIndex } = this.checkForSavedBook(
+          res,
+          this.props.savedBooks,
+        );
+        if (newBookIndex !== -1) {
+          newBooks[newBookIndex] = {
+            ...newBooks[newBookIndex],
+            shelf: this.props.savedBooks[savedBookIndex].shelf,
+          };
         }
-        const{query}=this.state
-        const {books, onDeleteBook, onUpdateBook}=this.props
-
-        //if query is empty
-        const showingBooks = query === ''
-        //then show our books to be original books 
-        ? books
-        //if query state not empty
-        : books.filter((b)=>
-            
-            b.title.toLowerCase().includes(query.toLowerCase())
-        )
-        return(
-            <div>
-                <Link 
-            to="/"
-            className="btn btn-primary"
-            >Back to your books list</Link>
-                <h2>Search in All Books</h2>
-                <div className="row">
-                <div className="col-md-12">
-                    <div className='form-group'>
-                   
-                    <input className="form-control" type="text" placeholder="search book"
-                    value={query}
-                    onChange={(event)=>this.updateQuery(event.target.value)}
-                    />
-                    </div>
-                </div>
-                <div className='col-md-12'>
-                    {
-                        showingBooks.length != books.length &&(
-                            <div>
-                                <span>Now showing {showingBooks.length} of {books.length}</span>
-                                <button onClick={this.clearQuery}>Show ALL</button>
-                                </div>
-                        )
-                    }
-                </div>
-                </div>
-                <h2 className="alert alert-primary" role="alert">Books List</h2>
-            <div className="row">
-                <div className="col-md-12">
-                    <div className='card-columns'>
-                        {
-                            showingBooks.map((book)=>(
-                               
-                                <div className='card' key={book.id}>
-                                    <button
-                                    onClick={()=>onDeleteBook(book)} className="btn btn-block btn-primary"
-                                    >Remove Book from this list</button>
-                                <img src={book.imageLinks.thumbnail} alt={book.title} className='card-img-top' />
-                                <div className='card-body'>
-                    
-                                  <div className='row'>
-                                    <div className="col-md-12">
-                                      <h5 className='card-title'>{book.title}</h5>
-                                    
-                                      <h6><span className="badge badge-primary">{book.shelf}</span></h6>
-                                    </div>
-                                  </div> 
-                    
-                    
-                                  <select value={book.shelf} onChange={(event)=>this.updateInputSelect(book,event.target.value)} className='form-control'>
-                                    <option value="currentlyReading">Currently Reading</option>
-                                    <option value="wantToRead">want to read</option>
-                                    <option value="read">read</option>
-                                  </select>
-                    
-                                </div>
-                              </div>
-                            ))
-                        }
-                      </div>
-                </div>
-            </div>
-            
-            </div>
-        )
+        this.setState({ books: newBooks });
+      });
+    } else {
+      this.setState({ books: [] });
     }
-}
+  };
 
+  clearQuery = () => {
+    this.updateQuery('');
+  };
+  render() {
+    this.updateInputSelect = (book, e) => {
+      onUpdateBook(book, e);
+    };
+    const { query, books } = this.state;
+    const { onUpdateBook } = this.props;
+    return (
+      <div>
+        <Link to="/" className="btn btn-primary">
+          Back to your books list
+        </Link>
+        <h2>Search in All Books</h2>
+        <div className="row">
+          <div className="col-md-12">
+            <div className="form-group">
+              <input
+                className="form-control"
+                type="text"
+                placeholder="search book"
+                value={query}
+                onChange={event => this.updateQuery(event.target.value)}
+              />
+            </div>
+          </div>
+          <div className="col-md-12"></div>
+        </div>
+        <h2 className="alert alert-primary" role="alert">
+          Books List
+        </h2>
+        <BookListContainer>
+          {books.length > 0 &&
+            books.map(book => (
+              <BookCard
+                key={book.id}
+                onUpdateBook={this.onUpdateBook}
+                book={book}
+              />
+            ))}
+        </BookListContainer>
+      </div>
+    );
+  }
+}
 
 export default BooksSearch;
